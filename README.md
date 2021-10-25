@@ -1,5 +1,5 @@
 # ansible
-Learning ansible.
+School work (VG uppgift)
 ------------------------------
 
 ## Host machine
@@ -37,3 +37,7 @@ Install ansible: (Ubantu host)
 * ansible -m ping all --> To check connectivity to vms
 # labb
 # labb
+
+## Troubleshoot:
+* If key_handle.sh or bootstrap.sh returns with premission denied, check if those files are executable.
+  run --> chmod 755 key_handle.sh  bootstrap.sh
