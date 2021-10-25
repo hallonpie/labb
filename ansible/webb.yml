@@ -5,8 +5,33 @@
       yum:
         name: httpd
         state: latest
+
     - name: Start apache at boot.
       service:
         name: httpd
         enabled: yes
         state: started
+
+    - name: Definiera en vhost.
+      copy:
+        src: "filer/min_vhost.conf"
+        dest: "/etc/httpd/conf.d/min_vhost.conf"
+
+    - name: Starta om Apache.
+      service:
+        name: httpd
+        state: restarted  
+
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: /var/www/example.org
+        state: directory
+        owner: apache
+        group: apache
+        mode: '0755'
+    
+    - name: Copy index.html file to vhost directory
+      copy:
+        src: filer/index.html
+        dest: /var/www/example.org/index.html
+        

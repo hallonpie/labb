@@ -1,0 +1,13 @@
+---
+- hosts: databas
+  tasks:
+    - name: Install latest version of mariadb-server
+      yum:
+        name: mariadb-server
+        state: latest
+
+    - name: Start mariadb at start
+      service:
+        name: mariadb
+        enabled: yes
+        state: started
