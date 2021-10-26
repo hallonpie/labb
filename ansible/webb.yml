@@ -1,6 +1,12 @@
 ---
 - hosts: webb
   tasks:
+    - name: include variable files
+      include_vars: 
+        dir: vars/webb
+        extensions: 
+          - 'yml'
+
     - name: Install latest version of apache (httpd for centos)
       yum:
         name: httpd
@@ -13,9 +19,15 @@
         state: started
 
     - name: Definiera en vhost.
-      copy:
-        src: "filer/min_vhost.conf"
+      template:
+        src: "templates/min_vhost.conf.j2"
         dest: "/etc/httpd/conf.d/min_vhost.conf"
+
+    - name: Install required packages with loop
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop: "{{ required_packages }}"
 
     - name: Starta om Apache.
       service:

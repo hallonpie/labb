@@ -1,8 +1,14 @@
 ---
 - hosts: databas
   tasks:
-    - include_vars: vars/databas/main.yml
-    
+    # - include_vars: vars/databas/main.yml
+    # - include_vars: vars/databas/password.yml
+    - name: include variable files
+      include_vars: 
+        dir: vars/databas
+        extensions: 
+          - 'yml'
+
     - name: Install latest version of mariadb-server
       yum:
         name: mariadb-server
@@ -25,9 +31,14 @@
         host_all: yes
         state: absent
 
-    - name: Create database user with name 'webb-app' and password '12345' with all database privileges
+    - name: Create database user with name 'webb-app' and password 'secretpassword' with all database privileges
       community.mysql.mysql_user:
-        name: bob
-        password: 12345
+        name: web-app
+        password: "{{ database_password }}"
         priv: '*.*:ALL'
+        state: present
+    
+    - name: Create a new database with name 'webappdb'
+      community.mysql.mysql_db:
+        name: webappdb
         state: present

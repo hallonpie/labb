@@ -1,0 +1,8 @@
+---
+  required_packages:
+    - mod_security
+    - mod_ssl
+    - mod_wsgi
+    - mod_ldap
+    - mod_auth_kerb 
+    - mod_auth_gssapi

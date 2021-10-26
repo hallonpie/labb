@@ -1,4 +1,4 @@
-<VirtualHost *:80>
+<VirtualHost {{ ansible_host }}:80>
     ServerName www.example.org
     DocumentRoot "/var/www/example.org"
 </VirtualHost>
