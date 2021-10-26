@@ -12,7 +12,7 @@ School work (VG uppgift)
 #### Aim is to automate VM install process for ansible lab
 
 ------------------------------
-Install vagrant: (Ubantu host)
+Install vagrant: (On host)
 ------------------------------
 
 * curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -20,7 +20,7 @@ Install vagrant: (Ubantu host)
 * sudo apt-get update && sudo apt-get install vagrant
 
 ------------------------------
-Install ansible: (Ubantu host)
+Install ansible: (On host)
 ------------------------------
 
 * sudo apt update
@@ -41,3 +41,10 @@ Install ansible: (Ubantu host)
 ## Troubleshoot:
 * If key_handle.sh or bootstrap.sh returns with premission denied, check if those files are executable.
   run --> chmod 755 key_handle.sh  bootstrap.sh
+
+# Ansible
+
+## WEB
+
+## Database
+* To run databas.yml host machine needs community.mysql collection. On host machine run "ansible-galaxy collection install community.mysql"
