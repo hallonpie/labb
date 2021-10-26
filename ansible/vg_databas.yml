@@ -31,11 +31,19 @@
         host_all: yes
         state: absent
 
-    - name: Create database user with name 'webb-app' and password 'secretpassword' with all database privileges
+    - name: delete database user with name 'webb-app' and password 'secretpassword' with all database privileges
       community.mysql.mysql_user:
         name: web-app
         password: "{{ database_password }}"
         priv: '*.*:ALL'
+        state: absent
+
+    - name: Create database user with name 'webb-app' and password 'secretpassword' with all database privileges
+      community.mysql.mysql_user:
+        name: web-app
+        password: "{{ database_password }}"
+        priv: '*.*:ALL,GRANT'
+        host: 10.10.0.10
         state: present
     
     - name: Create a new database with name 'webappdb'
