@@ -22,17 +22,13 @@
       template:
         src: "templates/min_vhost.conf.j2"
         dest: "/etc/httpd/conf.d/min_vhost.conf"
+      notify: Starta om Apache
 
     - name: Install required packages with loop
       yum:
         name: "{{ item }}"
         state: latest
       loop: "{{ required_packages }}"
-
-    - name: Starta om Apache.
-      service:
-        name: httpd
-        state: restarted  
 
     - name: Create a directory if it does not exist
       ansible.builtin.file:
@@ -46,4 +42,10 @@
       copy:
         src: filer/index.html
         dest: /var/www/example.org/index.html
+
+  handlers: 
+      - name: Starta om Apache.
+        service:
+          name: httpd
+          state: restarted  
         
