@@ -1,13 +1,33 @@
 ---
 - hosts: databas
   tasks:
+    - include_vars: vars/databas/main.yml
+    
     - name: Install latest version of mariadb-server
       yum:
         name: mariadb-server
         state: latest
+
+    - name: Install a list of packages with a list of variable 
+      yum:
+        name: "{{ packages }}"
 
     - name: Start mariadb at start
       service:
         name: mariadb
         enabled: yes
         state: started
+
+    # To use bellow module, we need to run "ansible-galaxy collection install community.mysql" on host machine.
+    - name: Removes all anonymous user accounts
+      community.mysql.mysql_user:
+        name: ''
+        host_all: yes
+        state: absent
+
+    - name: Create database user with name 'webb-app' and password '12345' with all database privileges
+      community.mysql.mysql_user:
+        name: bob
+        password: 12345
+        priv: '*.*:ALL'
+        state: present
