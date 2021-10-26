@@ -35,8 +35,10 @@ Install ansible: (On host)
 
 ## Ansible commands:
 * ansible -m ping all --> To check connectivity to vms
-# labb
-# labb
+* ansible-playbook webb.yml
+* ansible-vault encrypt vars/databas/password.yml
+* ansible-playbook  databas.yml --ask-vault-pass
+
 
 ## Troubleshoot:
 * If key_handle.sh or bootstrap.sh returns with premission denied, check if those files are executable.
