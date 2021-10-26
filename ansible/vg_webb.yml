@@ -1,0 +1,74 @@
+---
+- hosts: webb
+  tasks:
+    - name: include variable files
+      include_vars: 
+        dir: vars/webb
+        extensions: 
+          - 'yml'
+
+    - name: Install latest version of apache (httpd for centos)
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Start apache at boot.
+      service:
+        name: httpd
+        enabled: yes
+        state: started
+
+    - name: Definiera en vhost.
+      template:
+        src: "templates/vg_vhost.conf.j2"
+        dest: "/etc/httpd/conf.d/vg_vhost.conf"
+      notify: Starta om Apache
+
+    - name: Install required packages with loop
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ required_packages }}"
+
+# To use cpanm run "ansible-galaxy collection install community.general" on host machine to download module
+    - name: Install cpanm module Dnacer
+      community.general.cpanm:
+        name: Dancer
+
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: /var/www/demo
+        state: directory
+        owner: apache
+        group: apache
+        mode: '0755'
+    
+    # - name: Download webapp from git repo and place it in webserver
+    #   ansible.builtin.git: 
+    #     repo: https://github.com/initab/demoapp
+    #     dest: /var/www/demo/
+    #     clone: yes
+    #     force: yes
+   
+    - name: Database info update in environment/production.yml file
+      copy: 
+        src: filer/production.yml
+        dest: /var/www/demo/environments/production.yml
+    
+    - name: Copy unit file to webserver to run web app
+      copy: 
+        src: filer/demod.service
+        dest: /etc/systemd/system/demod.service
+    
+  # Run "ansible-galaxy collection install ansible.posix" on host
+    - name: Set httpd_can_network_connect flag on and keep it persistent across reboots
+      ansible.posix.seboolean:
+        name: httpd_can_network_connect
+        state: yes
+        persistent: yes
+
+  handlers: 
+      - name: Starta om Apache
+        service:
+          name: httpd
+          state: restarted  

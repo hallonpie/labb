@@ -47,6 +47,7 @@ Install ansible: (On host)
 # Ansible
 
 ## WEB
+* To run vg_webb.yml host machine needs community.genaral.cpanm module collection. On host machine run "ansible-galaxy collection install community.general"
 
 ## Database
 * To run databas.yml host machine needs community.mysql collection. On host machine run "ansible-galaxy collection install community.mysql"
